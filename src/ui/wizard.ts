@@ -1,4 +1,4 @@
-import { SRD_PACKS } from "../constants.ts";
+import { MODULE_TITLE, SRD_PACKS } from "../constants.ts";
 import { countPdfPages, PdfRejected, readPdfPages } from "../pdf/browser.ts";
 import { extractDocument } from "../pdf/extract.ts";
 import { completeChat, providerById, type ProviderId } from "../llm/providers.ts";
@@ -51,7 +51,7 @@ export class ImportWizard extends foundry.applications.api.ApplicationV2 {
     classes: ["folio-window"],
     tag: "form",
     window: {
-      title: "Folio",
+      title: MODULE_TITLE,
       icon: "fas fa-book-open",
       resizable: true,
     },
@@ -136,7 +136,7 @@ export class ImportWizard extends foundry.applications.api.ApplicationV2 {
     if (!importId) return;
     if (!await confirmUndo(title)) return;
     const removed = await undoImport(importId);
-    ui.notifications?.info(`Folio removed ${removed} document${removed === 1 ? "" : "s"}.`);
+    ui.notifications?.info(`Forge Scribe removed ${removed} document${removed === 1 ? "" : "s"}.`);
     if (this.#state.result?.importId === importId) {
       this.#state.step = "setup";
       this.#state.result = null;
@@ -177,12 +177,12 @@ export class ImportWizard extends foundry.applications.api.ApplicationV2 {
       return;
     }
     if (game.system.id !== "dnd5e") {
-      this.#state.error = "Folio imports into a dnd5e world.";
+      this.#state.error = "Forge Scribe imports into a dnd5e world.";
       await this.#show();
       return;
     }
     if (!versionAtLeast(game.system.version, "6.0.0")) {
-      this.#state.error = `Folio needs dnd5e 6.0.0 or newer. This world has ${game.system.version}.`;
+      this.#state.error = `Forge Scribe needs dnd5e 6.0.0 or newer. This world has ${game.system.version}.`;
       await this.#show();
       return;
     }
@@ -292,7 +292,7 @@ export class ImportWizard extends foundry.applications.api.ApplicationV2 {
         warnings: result.warnings,
       };
       this.#state.step = "done";
-      ui.notifications?.info(`Folio created ${result.journalIds.length} journals and ${result.actorIds.length} actors.`);
+      ui.notifications?.info(`Forge Scribe created ${result.journalIds.length} journals and ${result.actorIds.length} actors.`);
     } catch (error) {
       this.#state.step = "review";
       this.#state.error = error instanceof Error ? error.message : "Foundry rejected the documents.";

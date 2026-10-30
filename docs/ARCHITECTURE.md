@@ -1,16 +1,16 @@
-# How Folio is built
+# How Forge Scribe is built
 
 This is a walkthrough for someone who has not written a Foundry VTT module before. It names the files that matter and the Foundry ideas they depend on.
 
 ## What a module is
 
-Foundry is the virtual tabletop program. A **system** (here, `dnd5e`) defines the rules: actor sheets, items, spells. A **module** is an add-on that runs inside a world. Folio is a module. It does not ship adventures. The GM points it at a PDF they own, and it creates documents in that world.
+Foundry is the virtual tabletop program. A **system** (here, `dnd5e`) defines the rules: actor sheets, items, spells. A **module** is an add-on that runs inside a world. Forge Scribe is a module. It does not ship adventures. The GM points it at a PDF they own, and it creates documents in that world.
 
 Foundry loads the module because of `module.json`:
 
-- `id` must match the folder name under `Data/modules`. Ours is `folio`.
-- `esmodules` is the JavaScript entry. Foundry runs `dist/folio.js` as an ES module when the world starts.
-- `styles` is `dist/folio.css`, loaded for the whole world, which is why the read-aloud box is styled inside journals.
+- `id` must match the folder name under `Data/modules`. Ours is `forge-scribe`.
+- `esmodules` is the JavaScript entry. Foundry runs `dist/forge-scribe.js` as an ES module when the world starts.
+- `styles` is `dist/forge-scribe.css`, loaded for the whole world, which is why the read-aloud box is styled inside journals.
 - `compatibility.minimum` is Foundry 14. `relationships.systems` requires the dnd5e system at 6.0.0 or newer.
 - There is no `packs` entry. Packs are compendiums of content. We do not ship content.
 
@@ -25,7 +25,7 @@ Settings have a **scope**:
 - `client` is stored in this browser only. The API key uses client scope. It is not written into the world database and is not sent to other users. The wizard is the only place that reads it, and `src/llm/providers.ts` puts it in an HTTP header to the provider the GM picked.
 - `world` is stored in the world. The ruleset (2014 or 2024) and the import log use world scope so every GM of that world sees the same choice.
 
-`renderJournalDirectory` fires when the Journal sidebar is drawn. We add a Folio button there, and only if `game.user.isGM` is true. Players do not see it. There is also a button under Configure Settings, limited with `restricted: true`.
+`renderJournalDirectory` fires when the Journal sidebar is drawn. We add a Forge Scribe button there, and only if `game.user.isGM` is true. Players do not see it. There is also a button under Configure Settings, limited with `restricted: true`.
 
 ## The wizard
 
@@ -35,7 +35,7 @@ The window has five steps: pick a file, confirm what was extracted, wait, review
 
 ## Reading the PDF
 
-`src/pdf/browser.ts` loads `pdfjs-dist` in the GM's browser. Foundry has its own PDF viewer, but that copy is not a stable API for modules, so we bundle our own and copy `pdf.worker.min.mjs` next to `dist/folio.js`.
+`src/pdf/browser.ts` loads `pdfjs-dist` in the GM's browser. Foundry has its own PDF viewer, but that copy is not a stable API for modules, so we bundle our own and copy `pdf.worker.min.mjs` next to `dist/forge-scribe.js`.
 
 pdf.js returns fragments with an x and a y, not paragraphs. `src/pdf/columns.ts` finds the blank gutter between two columns and reads the left column before the right one. A drop cap (a huge "Q" beside "ueen Kalia") is glued back onto the first line. `src/pdf/headings.ts` treats larger type as headings. `src/pdf/statblocks.ts` cuts out a block when a heading is followed by Armor Class, hit points, and the STR DEX CON row.
 
@@ -69,7 +69,7 @@ Journals: one **JournalEntry** per chapter, one **page** per section. Page HTML 
 
 `src/foundry/create.ts` does the creating, but only through an `ImportHost`. The tests pass a fake host. `src/foundry/host.ts` is the real one: `Folder.create`, `Actor.create`, `JournalEntry.create`, and `game.packs`.
 
-Every created document gets `flags.folio.importId`. **Flags** are a bag of module data on a document. `src/foundry/undo.ts` finds documents with that flag and deletes them.
+Every created document gets `flags["forge-scribe"].importId`. **Flags** are a bag of module data on a document. `src/foundry/undo.ts` finds documents with that flag and deletes them.
 
 ## Adventure export
 
@@ -84,7 +84,7 @@ npm run typecheck
 npm run build
 ```
 
-Vite writes `dist/folio.js`, `dist/folio.css`, and copies the pdf.js worker. Tests use Vitest and do not need a Foundry license. The Hunted Queen PDF in `test-pdfs/` is CC BY 4.0; see `test-pdfs/README.md`.
+Vite writes `dist/forge-scribe.js`, `dist/forge-scribe.css`, and copies the pdf.js worker. Tests use Vitest and do not need a Foundry license. The Hunted Queen PDF in `test-pdfs/` is CC BY 4.0; see `test-pdfs/README.md`.
 
 `scripts/dump-blocks.ts` prints the stat blocks extracted from that PDF. It is a debugging aid, not part of the module.
 

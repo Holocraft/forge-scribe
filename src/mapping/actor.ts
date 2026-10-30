@@ -89,7 +89,7 @@ function featureItem(action: ActionDraft, newId: () => string): ItemDraft {
       description: { value: actionDescription(action) },
       type: { value: "monster", subtype: "" },
       activities: Object.fromEntries(activities.map((activity) => [activity._id, activity])),
-      source: { custom: "Folio import" },
+      source: { custom: "Forge Scribe import" },
     },
   };
 }
@@ -147,7 +147,7 @@ export function npcToActorData(npc: NpcDraft, options: {
   const biography = [
     npc.biography ? `<p>${escapeHtml(npc.biography)}</p>` : "",
     notes.length
-      ? `<aside class="folio-import-notes"><p><strong>Folio.</strong> ${escapeHtml(notes.join(" "))}</p></aside>`
+      ? `<aside class="folio-import-notes"><p><strong>Forge Scribe.</strong> ${escapeHtml(notes.join(" "))}</p></aside>`
       : "",
   ].join("");
 
@@ -192,7 +192,7 @@ export function npcToActorData(npc: NpcDraft, options: {
           custom: knownType ? "" : (npc.creatureType ?? ""),
         },
         biography: { value: biography },
-        source: { rules: options.ruleset, custom: "Folio import" },
+        source: { rules: options.ruleset, custom: "Forge Scribe import" },
       },
       traits: {
         size,

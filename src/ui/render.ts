@@ -4,7 +4,7 @@ import type { ImportRecord } from "../foundry/settings.ts";
 import type { PlanActor } from "../plan/types.ts";
 import type { WizardState } from "./state.ts";
 
-const NOTICE = "Only import PDFs you own or that are freely licensed. Folio reads the file in this browser and sends extracted text only to the provider you choose. It does not upload the PDF. Not legal advice.";
+const NOTICE = "Only import PDFs you own or that are freely licensed. Forge Scribe reads the file in this browser and sends extracted text only to the provider you choose. It does not upload the PDF. Not legal advice.";
 
 export function renderWizard(state: WizardState, imports: ImportRecord[]): string {
   if (state.step === "working") return working(state);

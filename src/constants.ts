@@ -1,8 +1,8 @@
 /** Module id. Must match the folder name under Foundry's Data/modules and the id in module.json. */
-export const MODULE_ID = "folio";
+export const MODULE_ID = "forge-scribe";
 
-/** Working title. The package listing name is Michael's to decide. */
-export const MODULE_TITLE = "Folio";
+/** Shown in Foundry's module list and on the wizard window. The id matches the repo and the install folder. */
+export const MODULE_TITLE = "Forge Scribe";
 
 export type Ruleset = "2014" | "2024";
 

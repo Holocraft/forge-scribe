@@ -28,9 +28,9 @@ jobs:
       - name: Zip the module
         run: |
           cd build
-          zip -r folio.zip folio
+          zip -r forge-scribe.zip forge-scribe
       - uses: softprops/action-gh-release@v2
         with:
           files: |
             build/module.json
-            build/folio.zip
+            build/forge-scribe.zip

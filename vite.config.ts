@@ -7,7 +7,7 @@ const root = fileURLToPath(new URL(".", import.meta.url));
 
 /**
  * Foundry loads one ES module and one stylesheet from module.json.
- * Library mode emits dist/folio.js. The pdf.js worker is copied beside it
+ * Library mode emits dist/forge-scribe.js. The pdf.js worker is copied beside it
  * because the browser cannot import it out of node_modules at runtime.
  */
 export default defineConfig({
@@ -20,8 +20,8 @@ export default defineConfig({
     lib: {
       entry: resolve(root, "src/folio.ts"),
       formats: ["es"],
-      fileName: () => "folio.js",
-      cssFileName: "folio",
+      fileName: () => "forge-scribe.js",
+      cssFileName: "forge-scribe",
     },
     rollupOptions: {
       output: {

@@ -5,16 +5,16 @@
 import { readFileSync, writeFileSync, mkdirSync, cpSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-const repo = process.env.GITHUB_REPOSITORY ?? "OWNER/folio";
+const repo = process.env.GITHUB_REPOSITORY ?? "Holocraft/forge-scribe";
 const tag = process.env.GITHUB_REF_NAME ?? `v${JSON.parse(readFileSync("module.json", "utf8")).version}`;
 const version = tag.replace(/^v/, "");
 const manifest = JSON.parse(readFileSync("module.json", "utf8"));
 manifest.version = version;
 manifest.url = `https://github.com/${repo}`;
 manifest.manifest = `https://github.com/${repo}/releases/latest/download/module.json`;
-manifest.download = `https://github.com/${repo}/releases/download/${tag}/folio.zip`;
+manifest.download = `https://github.com/${repo}/releases/download/${tag}/forge-scribe.zip`;
 
-const moduleDir = resolve("build/folio");
+const moduleDir = resolve("build/forge-scribe");
 mkdirSync(moduleDir, { recursive: true });
 for (const entry of ["LICENSE", "README.md", "dist", "lang"]) {
   cpSync(entry, resolve(moduleDir, entry), { recursive: true });

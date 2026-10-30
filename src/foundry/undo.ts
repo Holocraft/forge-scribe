@@ -3,7 +3,7 @@ import { escapeHtml } from "../html.ts";
 import { forgetImport, readImportLog } from "./settings.ts";
 
 /**
- * Every document Folio creates carries flags.folio.importId.
+ * Every document Forge Scribe creates carries flags["forge-scribe"].importId.
  * Undo finds those documents and deletes them. Folders go last so their
  * contents are already gone. An adventure compendium recorded in the import
  * log is deleted too.
@@ -31,16 +31,16 @@ export async function undoImport(importId: string): Promise<number> {
 }
 
 export async function confirmUndo(title: string): Promise<boolean> {
-  const content = `<p>Delete the journals, actors, and folders Folio created for <strong>${escapeHtml(title)}</strong>?</p>`;
+  const content = `<p>Delete the journals, actors, and folders Forge Scribe created for <strong>${escapeHtml(title)}</strong>?</p>`;
   if (foundry.applications?.api?.DialogV2?.confirm) {
     return Boolean(await foundry.applications.api.DialogV2.confirm({
-      window: { title: "Undo Folio import" },
+      window: { title: "Undo Forge Scribe import" },
       content,
       modal: true,
     }));
   }
   if (typeof Dialog !== "undefined" && Dialog.confirm) {
-    return Boolean(await Dialog.confirm({ title: "Undo Folio import", content }));
+    return Boolean(await Dialog.confirm({ title: "Undo Forge Scribe import", content }));
   }
   return true;
 }

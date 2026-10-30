@@ -6,7 +6,7 @@ Install first, using the steps in the README. Use Foundry 14.367 or newer and dn
 
 ## Happy path
 
-1. Log in as the GM. Confirm a Folio button is on the Journal sidebar, and that Configure Settings → Folio → Open Folio opens the same window.
+1. Log in as the GM. Confirm a Forge Scribe button is on the Journal sidebar, and that Configure Settings → Forge Scribe → Open Forge Scribe opens the same window.
 2. Log in as a player in another browser. The button is absent. Opening the window anyway, if you can, shows that only the GM can import.
 3. As the GM, choose The Hunted Queen, pages 1–2, rules 2014, and turn AI off. Read the PDF, continue, and create.
 4. Expect a journal folder and an actor folder named The Hunted Queen.
@@ -20,7 +20,7 @@ Install first, using the steps in the README. Use Foundry 14.367 or newer and dn
 ## With an API key
 
 11. Put your own OpenAI or Anthropic key in the wizard. Read the PDF with AI on. The review screen appears, and any number the model changed (AC, HP, abilities) shows a note that the printed value was kept.
-12. In the browser network panel, the only requests for the PDF text go to `api.openai.com` or `api.anthropic.com`. Nothing goes to a Folio server. The key is not in the URL.
+12. In the browser network panel, the only requests for the PDF text go to `api.openai.com` or `api.anthropic.com`. Nothing goes to a Forge Scribe server. The key is not in the URL.
 13. Reload the world. The key is still in the wizard on this browser. It does not appear in Configure Settings as a world setting.
 
 ## SRD matching
@@ -34,7 +34,7 @@ Install first, using the steps in the README. Use Foundry 14.367 or newer and dn
 
 18. Create with "Also save an Adventure compendium" checked. A world compendium of type Adventure appears. Import it into an empty test world and confirm the journals and actors arrive, and that a journal link still opens the imported actor. This is the step most likely to need a fix in `src/foundry/adventure.ts`.
 19. On the review screen, uncheck one scene, rename an actor, merge a section upward, and re-read one stat block. Create. The unchecked scene is absent, and the new name is on the actor.
-20. Point Folio at a scanned PDF or a page that is only a picture. It stops and says there is no text layer. It does not offer OCR.
+20. Point Forge Scribe at a scanned PDF or a page that is only a picture. It stops and says there is no text layer. It does not offer OCR.
 21. Point it at a password-protected PDF. It refuses. It does not ask for the password.
 22. Open a world that is not dnd5e. The wizard explains that it needs dnd5e.
 23. Narrow a long PDF to a page range and confirm pages outside the range are not in the journals.

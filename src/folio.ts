@@ -55,7 +55,7 @@ Hooks.on("renderJournalDirectory", (_app: unknown, html: unknown) => {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "folio-open";
-  button.innerHTML = `<i class="fas fa-book-open"></i> Folio`;
+  button.innerHTML = `<i class="fas fa-book-open"></i> Forge Scribe`;
   button.addEventListener("click", openWizard);
   actions.prepend(button);
 });

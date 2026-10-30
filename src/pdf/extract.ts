@@ -19,7 +19,7 @@ export function extractDocument(pages: RawPage[]): ExtractedDocument {
   }
   if (sparsePages.length === pages.length && pages.length > 0) {
     warnings.push(
-      `No text layer on page ${sparsePages.join(", ")}. Folio does not OCR scans. Export a text PDF, or type the stat blocks in by hand.`,
+      `No text layer on page ${sparsePages.join(", ")}. Forge Scribe does not OCR scans. Export a text PDF, or type the stat blocks in by hand.`,
     );
   } else if (sparsePages.length > 0) {
     warnings.push(

@@ -155,7 +155,7 @@ describe("stat block to dnd5e", () => {
     const copied = actorDataFromSrd(source, {
       folderId: "folder1",
       importId: "import1",
-      moduleId: "folio",
+      moduleId: "forge-scribe",
       name: "Goblin",
       npc: {
         name: "Goblin",
@@ -167,7 +167,7 @@ describe("stat block to dnd5e", () => {
     });
     expect(copied._id).toBeUndefined();
     expect((copied._stats as { compendiumSource: string }).compendiumSource).toBe(source.uuid);
-    expect((copied.flags as { folio: { match: string } }).folio.match).toBe("srd-changed");
+    expect((copied.flags as { "forge-scribe": { match: string } })["forge-scribe"].match).toBe("srd-changed");
     const system = copied.system as { attributes: { ac: { flat: number; calc: string }; hp: { max: number } } };
     expect(system.attributes.ac).toMatchObject({ flat: 13, calc: "flat" });
     expect(system.attributes.hp.max).toBe(12);

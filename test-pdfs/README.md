@@ -10,6 +10,6 @@ The PDF says: "Payton Swick © 2020 CC Attribution."
 - Source: <https://payton.codes/wp-content/uploads/2020/12/the-hunted-queen-v1.pdf>
 - Credit page: <https://payton.codes/>
 
-It is included only as a test fixture for text extraction. Folio does not ship
+It is included only as a test fixture for text extraction. Forge Scribe does not ship
 this adventure as Foundry content. Changes to the PDF itself are not made here;
 attribution stays with Payton Swick.

@@ -109,7 +109,7 @@ describe("createImport", () => {
 
     const actor = world.created.find((entry) => entry.kind === "Actor");
     expect(actor?.data.folder).toBeTruthy();
-    expect((actor?.data.flags as { folio: { importId: string } }).folio.importId).toBe(result.importId);
+    expect((actor?.data.flags as { "forge-scribe": { importId: string } })["forge-scribe"].importId).toBe(result.importId);
     const items = actor?.data.items as { name: string }[];
     expect(items.some((item) => item.name === "Studded Leather Armor")).toBe(true);
     expect(items.some((item) => item.name === "Stab")).toBe(true);

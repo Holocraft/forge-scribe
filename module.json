@@ -1,6 +1,6 @@
 {
-  "id": "folio",
-  "title": "Folio",
+  "id": "forge-scribe",
+  "title": "Forge Scribe",
   "description": "PLACEHOLDER — a human must write this before the package is listed. See docs/LISTING.md.",
   "version": "0.1.0",
   "compatibility": {
@@ -10,8 +10,8 @@
   "authors": [
     { "name": "Michael" }
   ],
-  "esmodules": ["dist/folio.js"],
-  "styles": ["dist/folio.css"],
+  "esmodules": ["dist/forge-scribe.js"],
+  "styles": ["dist/forge-scribe.css"],
   "languages": [
     {
       "lang": "en",
@@ -31,7 +31,7 @@
       }
     ]
   },
-  "url": "https://github.com/OWNER/folio",
-  "manifest": "https://github.com/OWNER/folio/releases/latest/download/module.json",
-  "download": "https://github.com/OWNER/folio/releases/download/v0.1.0/folio.zip"
+  "url": "https://github.com/Holocraft/forge-scribe",
+  "manifest": "https://github.com/Holocraft/forge-scribe/releases/latest/download/module.json",
+  "download": "https://github.com/Holocraft/forge-scribe/releases/download/v0.1.0/forge-scribe.zip"
 }

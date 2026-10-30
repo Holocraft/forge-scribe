@@ -38,8 +38,7 @@ async function loadPdfjs(): Promise<PdfjsModule> {
   if (!pdfjsPromise) {
     pdfjsPromise = import("pdfjs-dist").then((mod) => {
       const pdfjs = mod as unknown as PdfjsModule;
-      // The worker file is copied beside dist/folio.js by the Vite build.
-      // The worker is copied next to dist/folio.js. The URL is resolved when Foundry loads the module.
+      // The worker is copied next to dist/forge-scribe.js. The URL is resolved when Foundry loads the module.
       pdfjs.GlobalWorkerOptions.workerSrc = new URL(/* @vite-ignore */ "./pdf.worker.min.mjs", import.meta.url).href;
       return pdfjs;
     });
@@ -51,7 +50,7 @@ export function rejectionMessage(error: unknown): string | null {
   if (!error || typeof error !== "object") return null;
   const name = "name" in error ? String(error.name) : "";
   if (name === "PasswordException") {
-    return "This PDF is password-protected or DRM-locked. Folio will not try to open it. Only import PDFs you own.";
+    return "This PDF is password-protected or DRM-locked. Forge Scribe will not try to open it. Only import PDFs you own.";
   }
   return null;
 }
