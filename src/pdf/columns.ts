@@ -26,14 +26,18 @@ export function columnBoundary(items: RawItem[], pageWidth: number): number | nu
   }
   const min = Math.floor(strips * 0.3);
   const max = Math.floor(strips * 0.7);
-  let best: { width: number; at: number } | null = null;
+  let bestWidth = 0;
+  let bestAt = 0;
   let run = 0;
   let runStart = 0;
   const consider = () => {
     if (run === 0) return;
     const width = run * STRIP;
     const at = (runStart + run / 2) * STRIP;
-    if (width >= 16 && (!best || width > best.width)) best = { width, at };
+    if (width >= 16 && width > bestWidth) {
+      bestWidth = width;
+      bestAt = at;
+    }
   };
   for (let index = min; index <= max; index += 1) {
     if ((ink[index] ?? 0) === 0) {
@@ -45,8 +49,8 @@ export function columnBoundary(items: RawItem[], pageWidth: number): number | nu
     }
   }
   consider();
-  if (!best) return null;
-  const splitAt = best.at;
+  if (bestWidth === 0) return null;
+  const splitAt = bestAt;
   const left = items.filter((item) => item.x < splitAt).length;
   const right = items.length - left;
   if (left < items.length * 0.2 || right < items.length * 0.2) return null;

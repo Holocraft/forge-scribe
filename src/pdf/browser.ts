@@ -39,7 +39,8 @@ async function loadPdfjs(): Promise<PdfjsModule> {
     pdfjsPromise = import("pdfjs-dist").then((mod) => {
       const pdfjs = mod as unknown as PdfjsModule;
       // The worker file is copied beside dist/folio.js by the Vite build.
-      pdfjs.GlobalWorkerOptions.workerSrc = new URL("./pdf.worker.min.mjs", import.meta.url).href;
+      // The worker is copied next to dist/folio.js. The URL is resolved when Foundry loads the module.
+      pdfjs.GlobalWorkerOptions.workerSrc = new URL(/* @vite-ignore */ "./pdf.worker.min.mjs", import.meta.url).href;
       return pdfjs;
     });
   }
@@ -55,33 +56,40 @@ export function rejectionMessage(error: unknown): string | null {
   return null;
 }
 
-export async function readPdfPages(
-  data: Uint8Array,
-  range: { start: number; end: number },
-): Promise<RawPage[]> {
+async function openDocument(data: Uint8Array): Promise<PdfjsDocument> {
   const pdfjs = await loadPdfjs();
   const open = (disableWorker: boolean) => pdfjs.getDocument({
     data,
     isEvalSupported: false,
     disableWorker,
   }).promise;
-
-  let doc: PdfjsDocument;
   try {
-    doc = await open(false);
+    return await open(false);
   } catch (error) {
     const rejected = rejectionMessage(error);
     if (rejected) throw new PdfRejected(rejected);
     // Some Foundry hosts refuse the module worker. Text extraction still works
     // on the main thread for a one-shot; we only fall back after the worker fails.
     try {
-      doc = await open(true);
+      return await open(true);
     } catch (second) {
       const again = rejectionMessage(second);
       if (again) throw new PdfRejected(again);
       throw second;
     }
   }
+}
+
+export async function countPdfPages(data: Uint8Array): Promise<number> {
+  const doc = await openDocument(data);
+  return doc.numPages;
+}
+
+export async function readPdfPages(
+  data: Uint8Array,
+  range: { start: number; end: number },
+): Promise<RawPage[]> {
+  const doc = await openDocument(data);
 
   const start = Math.max(1, Math.floor(range.start));
   const end = Math.min(doc.numPages, Math.floor(range.end));

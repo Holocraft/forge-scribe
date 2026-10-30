@@ -1,3 +1,89 @@
-# New repo
+# Folio
 
-This repo was created by a Cursor cloud agent.
+Folio is a Foundry VTT module that turns a D&D 5e adventure PDF into journals and NPC actors. It runs in the GM's browser. You bring your own OpenAI or Anthropic API key (or a local Ollama server). The PDF is not uploaded to us.
+
+**Only import PDFs you own or that are freely licensed.** Folio does not ship adventure text. Not legal advice.
+
+This is an MVP for Foundry v14 and the dnd5e system 6.0 or newer. Scenes, maps, OCR, and magic-item cards are not in this version. Bindery can pull art out of the same PDF.
+
+The name is a working title.
+
+## Install from a release
+
+After a version is tagged `v0.1.0` (or later) on GitHub, Foundry can install it from the manifest URL:
+
+`https://github.com/OWNER/folio/releases/latest/download/module.json`
+
+In Foundry, open **Setup → Add-on Modules → Install Module**, paste that URL, and install. Replace `OWNER/folio` with the real repository. The release workflow writes the real URL into the `module.json` attached to the release. The copy in the repository still says `OWNER` until that workflow runs.
+
+The module folder must end up named `folio`, matching the `id` in `module.json`.
+
+## Install from a local build
+
+You need Node 22.
+
+```bash
+npm install
+npm test
+npm run build
+```
+
+Copy these into `Data/modules/folio` (create the folder):
+
+- `module.json`
+- `dist/` (the script, the stylesheet, the source map, and `pdf.worker.min.mjs`)
+- `lang/`
+- `LICENSE`
+- `README.md`
+
+Launch a world that uses the dnd5e system, enable Folio in **Manage Modules**, and reload. A **Folio** button appears at the top of the Journal sidebar for the GM.
+
+## Using it
+
+1. Open Folio. Read the notice. Pick a text PDF and a page range.
+2. Choose 2014 or 2024 rules. That selects which SRD compendium names are matched against (`dnd5e.monsters` or `dnd5e.actors24`). The same choice is a world setting.
+3. Pick a provider. The API key is stored as a client setting in this browser. It is sent only to that provider.
+4. Review the journals and actors. Uncheck, rename, or merge sections. For a creature that exists in the SRD you can copy that actor or build one from the stat block.
+5. Create. Read-aloud text is a shaded box. Creature names in the journals link to the actors.
+6. **Undo import** deletes the documents from that run. Optionally, also save an Adventure compendium in this world so you can import the same set again.
+
+Turning AI off still imports from headings and from the numbers printed in stat blocks. If the model returns something that is not the small schema Folio asked for, that response is rejected and the printed numbers are used instead.
+
+Ollama has to allow the browser. If the request is blocked, start Ollama with `OLLAMA_ORIGINS=*`.
+
+## Tests
+
+`npm test` runs Vitest. It does not start Foundry. Covered:
+
+- PDF cleanup, two-column order, drop caps, and stat-block cuts, using The Hunted Queen (CC BY 4.0, see `test-pdfs/README.md`)
+- Validation of model JSON, including a retry and a rejection of raw Foundry actor JSON
+- Mapping a parsed stat block onto dnd5e actors, activities, and journal HTML
+- Creating documents through a fake Foundry host, including `@UUID` links
+
+A real world needs a Foundry license, so end-to-end checks are a checklist: `docs/MANUAL-TEST.md`.
+
+`npm run typecheck` runs the TypeScript compiler. `docs/ARCHITECTURE.md` explains the module for someone new to Foundry.
+
+## Release
+
+Pushing a tag `v0.1.0` runs `.github/workflows/release.yml`. It tests, builds, stamps `module.json` with the real GitHub URLs, and attaches `module.json` and `folio.zip` to the GitHub release. Foundry's update check uses the `manifest` URL, which always points at the latest release. `download` points at that tag's zip.
+
+## What is not done
+
+- Scenes, maps, and token art
+- OCR for scans
+- Magic items and roll tables as their own documents
+- Spellcasting NPCs beyond copying an SRD spell when the name matches
+- A hosted "no API key" service. The provider list is shaped so one can be added later
+- The Foundry package listing description. A human has to write that. See `docs/LISTING.md`
+
+## Open questions
+
+- The Foundry license for clicking through `docs/MANUAL-TEST.md` is still required. CI cannot boot Foundry.
+- The GitHub owner and repository slug. Manifest URLs say `OWNER/folio` until the release workflow, or a manual edit, replaces them.
+- Whether the product name stays Folio.
+- Whether to ask Foundry staff about the AI-policy gray area before a package listing, or to stay on a manifest URL. The listing text is intentionally unwritten.
+- Bindery is adding stat-block import. This module does not read maps. Interop (Bindery for art, Folio for text and actors) is not built.
+- Default model ids (`gpt-4.1-mini`, `claude-sonnet-4-5`) are starting points. The wizard lets you replace them.
+- Adventure export follows Foundry's Adventure document API, and the id rewrite on import still needs the manual checklist.
+- The Hunted Queen stat blocks do not print a Challenge rating. Folio leaves CR at 0 and says so. Confirm that is what you want on the sheet.

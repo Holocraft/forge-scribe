@@ -1,0 +1,172 @@
+.folio-window .window-content {
+  padding-top: 0.25rem;
+}
+
+.folio-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.35rem 0.2rem 0.6rem;
+  color: var(--color-text-primary, #f0f0e8);
+}
+
+.folio-wizard h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.folio-lead,
+.folio-hint,
+.folio-status,
+.folio-wizard p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.folio-notice {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--folio-rule, #8d6a3f);
+  border-radius: 4px;
+  background: color-mix(in srgb, #8d6a3f 16%, transparent);
+}
+
+.folio-error {
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, #9b2c2c 22%, transparent);
+}
+
+.folio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem 0.75rem;
+}
+
+.folio-span {
+  grid-column: 1 / -1;
+}
+
+.folio-wizard label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.folio-check {
+  flex-direction: row;
+  align-items: center;
+}
+
+.folio-wizard input[type="text"],
+.folio-wizard input[type="password"],
+.folio-wizard input[type="number"],
+.folio-wizard select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: var(--color-cool-5, rgba(0, 0, 0, 0.25));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.2));
+  border-radius: 3px;
+  padding: 0.3rem 0.45rem;
+}
+
+.folio-file {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.folio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.folio-actions button,
+.folio-section button,
+.folio-card button,
+.folio-past button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.folio-chapter,
+.folio-card,
+.folio-past {
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.15));
+  border-radius: 4px;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.45rem;
+}
+
+.folio-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  margin: 0.35rem 0 0.35rem 1rem;
+}
+
+.folio-section input[type="text"],
+.folio-card input[name="actor-name"] {
+  flex: 1;
+  min-width: 8rem;
+}
+
+.folio-card header {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.folio-badge {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #8d6a3f 35%, transparent);
+  white-space: nowrap;
+}
+
+.folio-pages {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+.folio-notes,
+.folio-warnings,
+.folio-past ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.folio-past li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.25rem 0;
+}
+
+/* Journal pages. This file is loaded for the whole world, so the class
+   reaches text inside a journal sheet. */
+.folio-read-aloud {
+  margin: 0.75rem 0;
+  padding: 0.65rem 0.9rem;
+  border-left: 3px solid #8d6a3f;
+  background: color-mix(in srgb, #8d6a3f 14%, transparent);
+  font-style: italic;
+}
+
+.folio-import-notes {
+  margin-top: 0.75rem;
+  font-size: 0.9em;
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .folio-grid {
+    grid-template-columns: 1fr;
+  }
+}

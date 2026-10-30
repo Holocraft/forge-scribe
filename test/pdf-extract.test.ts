@@ -1,34 +1,12 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { joinHyphenBreak, normalizeNumericDashes, normalizeSpaces } from "../src/pdf/cleanup.ts";
 import { columnBoundary, linesFromPage } from "../src/pdf/columns.ts";
 import { extractDocument } from "../src/pdf/extract.ts";
-import { rawPageFromPdfjs, type PdfjsTextItem } from "../src/pdf/from-pdfjs.ts";
 import type { RawItem, RawPage } from "../src/pdf/types.ts";
-
-const PDF_PATH = "test-pdfs/hunted-queen.pdf";
+import { loadHuntedQueen } from "./helpers/pdf.ts";
 
 function item(str: string, x: number, y: number, height = 9): RawItem {
   return { str, x, y, width: str.length * height * 0.5, height, fontName: "Body" };
-}
-
-async function loadHuntedQueen(): Promise<RawPage[]> {
-  const data = new Uint8Array(readFileSync(PDF_PATH));
-  const doc = await getDocument({ data, disableWorker: true, isEvalSupported: false }).promise;
-  const pages: RawPage[] = [];
-  for (let pageNumber = 1; pageNumber <= doc.numPages; pageNumber += 1) {
-    const page = await doc.getPage(pageNumber);
-    const viewport = page.getViewport({ scale: 1 });
-    const content = await page.getTextContent();
-    pages.push(rawPageFromPdfjs(
-      pageNumber,
-      viewport.width,
-      viewport.height,
-      content.items as PdfjsTextItem[],
-    ));
-  }
-  return pages;
 }
 
 describe("text cleanup", () => {

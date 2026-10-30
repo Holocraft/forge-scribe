@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Stamp manifest and stage the module folder
+        run: node scripts/stamp-manifest.mjs
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+      - name: Zip the module
+        run: |
+          cd build
+          zip -r folio.zip folio
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/module.json
+            build/folio.zip

@@ -1,0 +1,7 @@
+{
+  "FOLIO.Settings.Ruleset.name": "Monster rules",
+  "FOLIO.Settings.Ruleset.hint": "Which SRD compendium Folio matches monster names against. The import wizard can override this for one PDF.",
+  "FOLIO.Settings.Open.name": "Import a PDF",
+  "FOLIO.Settings.Open.label": "Open Folio",
+  "FOLIO.Settings.Open.hint": "Turn an adventure PDF you own into journals and NPC actors. The API key stays in this browser."
+}
