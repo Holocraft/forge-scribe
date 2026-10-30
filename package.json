@@ -1,0 +1,26 @@
+{
+  "name": "folio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Foundry VTT module that turns a D&D 5e adventure PDF into journals and NPC actors.",
+  "license": "MIT",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "extract-fixture": "tsx scripts/extract-fixture.ts"
+  },
+  "dependencies": {
+    "pdfjs-dist": "4.10.38",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vite": "6.4.1",
+    "vite-plugin-static-copy": "2.3.2",
+    "vitest": "3.2.4"
+  }
+}
