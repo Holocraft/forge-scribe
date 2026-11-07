@@ -41,9 +41,13 @@ import { emptyState, type WizardState } from "./state.ts";
 /**
  * ApplicationV2 is Foundry's window class (v13+). The wizard is one window
  * that swaps its contents as the GM moves from picking a file to reviewing
- * the plan. `_renderHTML` returns the body. Foundry calls the functions in
- * `actions` when a button with `data-action` is clicked, with `this` set to
- * the window.
+ * the plan. `_renderHTML` returns the `.folio-wizard` element, which is the
+ * only child of `.window-content`. Foundry calls the functions in `actions`
+ * when a button with `data-action` is clicked, with `this` set to the window.
+ *
+ * `window.resizable` draws the corner grip. The height is a real pixel size
+ * so that grip can shrink the window; the stylesheet then scrolls the step
+ * instead of letting the list cover the grip.
  */
 export class ImportWizard extends foundry.applications.api.ApplicationV2 {
   static DEFAULT_OPTIONS = {
@@ -94,9 +98,14 @@ export class ImportWizard extends foundry.applications.api.ApplicationV2 {
   }
 
   override async _renderHTML(): Promise<HTMLElement> {
-    const root = document.createElement("div");
-    root.innerHTML = renderWizard(this.#state, this.#pastImports());
-    return root;
+    const template = document.createElement("template");
+    template.innerHTML = renderWizard(this.#state, this.#pastImports()).trim();
+    const root = template.content.firstElementChild;
+    if (root instanceof HTMLElement && root.classList.contains("folio-wizard")) return root;
+    const fallback = document.createElement("div");
+    fallback.className = "folio-wizard";
+    fallback.innerHTML = `<div class="folio-body"></div>`;
+    return fallback;
   }
 
   override _replaceHTML(result: unknown, content: HTMLElement): void {
