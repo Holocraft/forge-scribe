@@ -1,13 +1,64 @@
-.folio-window .window-content {
+/*
+ * Foundry's ApplicationV2 shell is a column: header, .window-content, resize
+ * grip. .window-content is itself a column with overflow: hidden, and a flex
+ * item's default min-height is the height of its content. A long review then
+ * grows past the window and is clipped, with no scrollbar, and the corner
+ * grip sits under that overflow. min-height: 0 lets the column shrink to the
+ * window. The step body scrolls; Back / Create stay in the footer.
+ */
+.folio-window {
+  min-width: 22rem;
+  min-height: 14rem;
+  overflow: hidden;
+}
+
+.folio-window > .window-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
   padding-top: 0.25rem;
+}
+
+.folio-window > .window-resizable-handle {
+  z-index: 2;
 }
 
 .folio-wizard {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.35rem 0.2rem 0.6rem;
+  flex: 1 1 auto;
+  gap: 0.65rem;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.35rem 0.2rem 0.55rem;
   color: var(--color-text-primary, #f0f0e8);
+}
+
+.folio-body {
+  display: flex;
+  flex-direction: column;
+  /* 0 so a short step keeps its buttons under the list. 1 so a long step
+     shrinks to the window and scrolls, instead of covering the footer. */
+  flex: 0 1 auto;
+  gap: 0.75rem;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.2rem;
+}
+
+.folio-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.15));
 }
 
 .folio-wizard h3 {
@@ -76,12 +127,6 @@
 .folio-file {
   font-size: 0.8rem;
   opacity: 0.85;
-}
-
-.folio-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
 }
 
 .folio-actions button,

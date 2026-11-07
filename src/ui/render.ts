@@ -22,6 +22,21 @@ function errorBlock(error: string): string {
   return error ? `<p class="folio-error">${escapeHtml(error)}</p>` : "";
 }
 
+/**
+ * The window is a fixed height. The body scrolls; the buttons stay in view.
+ * Every step uses this so a long list cannot push Back / Create off the window.
+ */
+function frame(body: string, actions = ""): string {
+  const footer = actions.trim() ? `<div class="folio-actions">${actions}</div>` : "";
+  return `
+    <div class="folio-wizard">
+      <div class="folio-body">
+        ${body}
+      </div>
+      ${footer}
+    </div>`;
+}
+
 function setup(state: WizardState, imports: ImportRecord[]): string {
   const provider = providerById(state.provider);
   const past = imports.length === 0 ? "" : `
@@ -35,8 +50,7 @@ function setup(state: WizardState, imports: ImportRecord[]): string {
           </li>`).join("")}
       </ul>
     </section>`;
-  return `
-    <div class="folio-wizard">
+  return frame(`
       ${notice()}
       ${errorBlock(state.error)}
       <p class="folio-lead">Pick a text PDF, a page range, and the rules your monsters should use. Scenes and maps are not part of this version.</p>
@@ -77,37 +91,33 @@ function setup(state: WizardState, imports: ImportRecord[]): string {
           <p class="folio-hint">Ollama must allow this site. Start it with <code>OLLAMA_ORIGINS=*</code> if the browser blocks the request.</p>`}
       </div>
       <label class="folio-check"><input name="useAi" type="checkbox" ${state.useAi ? "checked" : ""}> Use AI to mark read-aloud text and clean up stat blocks</label>
-      <div class="folio-actions">
-        <button type="button" data-action="read-pdf" ${state.busy ? "disabled" : ""}>Read PDF</button>
-      </div>
       ${past}
-    </div>`;
+  `, `
+        <button type="button" data-action="read-pdf" ${state.busy ? "disabled" : ""}>Read PDF</button>
+  `);
 }
 
 function confirm(state: WizardState): string {
   const names = state.statBlockNames.length
     ? state.statBlockNames.map((name) => `<li>${escapeHtml(name)}</li>`).join("")
     : "<li>No stat blocks detected.</li>";
-  return `
-    <div class="folio-wizard">
+  return frame(`
       ${notice()}
       ${errorBlock(state.error)}
       <h3>${escapeHtml(state.fileName)}</h3>
       <p>Pages ${state.pageStart}–${state.pageEnd}. ${state.useAi ? `About ${state.requestEstimate} AI request${state.requestEstimate === 1 ? "" : "s"}.` : "AI is off. Headings and printed numbers will be used."}</p>
       <ul>${names}</ul>
-      <div class="folio-actions">
+  `, `
         <button type="button" data-action="back">Back</button>
         <button type="button" data-action="structure">Continue</button>
-      </div>
-    </div>`;
+  `);
 }
 
 function working(state: WizardState): string {
-  return `
-    <div class="folio-wizard">
+  return frame(`
       ${notice()}
       <p class="folio-status">${escapeHtml(state.status || "Working…")}</p>
-    </div>`;
+  `);
 }
 
 function review(state: WizardState): string {
@@ -131,8 +141,7 @@ function review(state: WizardState): string {
         </div>`).join("")}
     </details>`).join("");
   const actors = plan.actors.map((actor) => actorCard(actor)).join("");
-  return `
-    <div class="folio-wizard">
+  return frame(`
       ${notice()}
       ${errorBlock(state.error)}
       <h3>${escapeHtml(plan.title)}</h3>
@@ -141,11 +150,10 @@ function review(state: WizardState): string {
       <section><h3>Journals</h3>${chapters}</section>
       <section><h3>Actors</h3>${actors || "<p>No stat blocks.</p>"}</section>
       <label class="folio-check"><input name="exportAdventure" type="checkbox" ${state.exportAdventure ? "checked" : ""}> Also save an Adventure compendium in this world</label>
-      <div class="folio-actions">
+  `, `
         <button type="button" data-action="back">Back</button>
         <button type="button" data-action="create">Create documents</button>
-      </div>
-    </div>`;
+  `);
 }
 
 function actorCard(actor: PlanActor): string {
@@ -184,16 +192,14 @@ function done(state: WizardState, imports: ImportRecord[]): string {
   const warnings = result.warnings.length
     ? `<ul class="folio-warnings">${result.warnings.map((warning) => `<li>${escapeHtml(warning)}</li>`).join("")}</ul>`
     : "";
-  return `
-    <div class="folio-wizard">
+  return frame(`
       ${notice()}
       <h3>${escapeHtml(result.title)} is in the world</h3>
       <p>${result.journals} journal${result.journals === 1 ? "" : "s"}, ${result.actors} actor${result.actors === 1 ? "" : "s"}.${result.adventurePack ? ` Adventure compendium: ${escapeHtml(result.adventurePack)}.` : ""}</p>
       ${warnings}
       <p>Read-aloud text is in a shaded box. Creature names in the journals link to the actors. Maps are not imported; Bindery can pull art out of the same PDF.</p>
-      <div class="folio-actions">
+  `, `
         <button type="button" data-action="undo" data-import="${escapeHtml(result.importId)}" data-title="${escapeHtml(result.title)}">Undo import</button>
         <button type="button" data-action="back">Import another</button>
-      </div>
-    </div>`;
+  `);
 }
